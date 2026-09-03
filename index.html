@@ -578,9 +578,18 @@ select.fld option{background:#141414;color:var(--bone);}
 .gb-txt{font-size:.78rem;color:var(--dim);border-left:1px solid var(--edge);padding-left:14px;line-height:1.4;}
 .gb-txt b{display:block;color:var(--bone);font-weight:600;}
 
-.revs{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,20px);}
-.rev{border:1px solid var(--edge);background:var(--panel);padding:clamp(22px,2.6vw,28px);
-  display:flex;flex-direction:column;gap:14px;transition:border-color .3s,background .3s,transform .3s;}
+.revs-wrap{position:relative;overflow:hidden;}
+.revs-wrap::before,.revs-wrap::after{content:"";position:absolute;top:0;bottom:0;width:clamp(24px,6vw,90px);
+  z-index:3;pointer-events:none;}
+.revs-wrap::before{left:0;background:linear-gradient(90deg,var(--ink),rgba(10,10,10,0));}
+.revs-wrap::after{right:0;background:linear-gradient(270deg,var(--ink),rgba(10,10,10,0));}
+.revs{display:flex;width:max-content;gap:clamp(14px,1.6vw,20px);
+  animation:revScroll 34s linear infinite;}
+.revs-wrap:hover .revs{animation-play-state:paused;}
+.revs-wrap.paused .revs{animation-play-state:paused;}
+@keyframes revScroll{to{transform:translateX(-50%);}}
+.rev{flex:0 0 clamp(272px,30vw,368px);border:1px solid var(--edge);background:var(--panel);padding:clamp(22px,2.6vw,28px);
+  display:flex;flex-direction:column;gap:14px;transition:border-color .3s,background .3s;}
 .rev:hover{border-color:var(--hair-2);background:var(--panel-2);transform:translateY(-4px);}
 .rev-top{display:flex;align-items:flex-start;gap:12px;}
 .rev-av{width:42px;height:42px;flex:none;border-radius:50%;display:grid;place-content:center;
@@ -865,7 +874,6 @@ select.fld option{background:#141414;color:var(--bone);}
   .fgrid{grid-template-columns:repeat(2,1fr);}
   .f.c3{grid-column:span 2;}
   .local{grid-template-columns:1fr;}
-  .revs{grid-template-columns:1fr 1fr;}
   .map{min-height:330px;}
   .bens{grid-template-columns:1fr 1fr;}
   .vs{grid-template-columns:1fr;}
@@ -894,8 +902,8 @@ select.fld option{background:#141414;color:var(--bone);}
   .steps{grid-template-columns:1fr;}
   .bens{grid-template-columns:1fr;}
   .grid{grid-template-columns:1fr;}
-  .revs{grid-template-columns:1fr;}
   .g-badge{width:100%;}
+  .revs{animation-duration:22s;}
   .ftr-grid{grid-template-columns:1fr;}
   .fgrid{grid-template-columns:1fr;}
   .f.c2,.f.c3{grid-column:span 1;}
@@ -1135,36 +1143,38 @@ select.fld option{background:#141414;color:var(--bone);}
         </a>
       </div>
 
-      <div class="revs rv-wipe">
-        <article class="rev">
-          <div class="rev-top">
-            <div class="rev-av" style="background:#5b6470">D</div>
-            <div class="rev-id"><b>Duarte</b><span>2 avaliações · 1 foto</span></div>
-            <span class="rev-stars">★★★★★</span>
-          </div>
-          <p>"Super recomendo, fui muito bem atendido, ainda facilitaram a aprovação para eu sair de moto 0km da loja, estou super satisfeito com a minha mais nova aquisição."</p>
-          <div class="rev-foot"><span>Google</span><span>5 meses atrás</span></div>
-        </article>
+      <div class="revs-wrap rv-wipe">
+        <div class="revs" id="revsTrack">
+          <article class="rev">
+            <div class="rev-top">
+              <div class="rev-av" style="background:#5b6470">D</div>
+              <div class="rev-id"><b>Duarte</b><span>2 avaliações · 1 foto</span></div>
+              <span class="rev-stars">★★★★★</span>
+            </div>
+            <p>"Super recomendo, fui muito bem atendido, ainda facilitaram a aprovação para eu sair de moto 0km da loja, estou super satisfeito com a minha mais nova aquisição."</p>
+            <div class="rev-foot"><span>Google</span><span>5 meses atrás</span></div>
+          </article>
 
-        <article class="rev">
-          <div class="rev-top">
-            <div class="rev-av" style="background:#3f6f52">F</div>
-            <div class="rev-id"><b>Fernando Rodrigues</b><span>3 avaliações</span></div>
-            <span class="rev-stars">★★★★★</span>
-          </div>
-          <p>"Motos de excelente, melhor loja do RJ. Do atendimento à conclusão foram muito atenciosos em cada detalhe. Obrigado pela ajuda, sonho realizado 🙏"</p>
-          <div class="rev-foot"><span>Google</span><span>5 meses atrás</span></div>
-        </article>
+          <article class="rev">
+            <div class="rev-top">
+              <div class="rev-av" style="background:#3f6f52">F</div>
+              <div class="rev-id"><b>Fernando Rodrigues</b><span>3 avaliações</span></div>
+              <span class="rev-stars">★★★★★</span>
+            </div>
+            <p>"Motos de excelente, melhor loja do RJ. Do atendimento à conclusão foram muito atenciosos em cada detalhe. Obrigado pela ajuda, sonho realizado 🙏"</p>
+            <div class="rev-foot"><span>Google</span><span>5 meses atrás</span></div>
+          </article>
 
-        <article class="rev">
-          <div class="rev-top">
-            <div class="rev-av" style="background:#a15c2e">A</div>
-            <div class="rev-id"><b>Adriely dos Anjos</b><span>4 avaliações</span></div>
-            <span class="rev-stars">★★★★★</span>
-          </div>
-          <p>"Eu tive excelentes experiências com o Lucas, já comprei 3 veículos com ele, me auxiliou também na venda de uma moto. Muito profissional, prestativo e paciente. Eu recomendo a loja!"</p>
-          <div class="rev-foot"><span>Google</span><span>Avaliação verificada</span></div>
-        </article>
+          <article class="rev">
+            <div class="rev-top">
+              <div class="rev-av" style="background:#a15c2e">A</div>
+              <div class="rev-id"><b>Adriely dos Anjos</b><span>4 avaliações</span></div>
+              <span class="rev-stars">★★★★★</span>
+            </div>
+            <p>"Eu tive excelentes experiências com o Lucas, já comprei 3 veículos com ele, me auxiliou também na venda de uma moto. Muito profissional, prestativo e paciente. Eu recomendo a loja!"</p>
+            <div class="rev-foot"><span>Google</span><span>Avaliação verificada</span></div>
+          </article>
+        </div>
       </div>
 
       <div class="more rv"><a href="https://maps.app.goo.gl/GzJDuCupgtpMeBf8A" target="_blank" rel="noopener" class="btn btn-line btn-lg">Ver todas as avaliações no Google</a></div>
@@ -1598,6 +1608,23 @@ window.revelar = revelar;
     if (!tick){ tick = true; requestAnimationFrame(upd); }
   }, {passive:true});
   upd();
+})();
+
+/* ---------------------------------------------------------
+   AVALIAÇÕES — carrossel contínuo
+   --------------------------------------------------------- */
+(function(){
+  var wrap = document.querySelector(".revs-wrap");
+  var track = $("revsTrack");
+  if (!wrap || !track) return;
+  track.setAttribute("aria-hidden", "false");
+  var clone = track.innerHTML;
+  track.innerHTML = clone + clone;
+  Array.prototype.forEach.call(track.children, function(el, i){
+    if (i >= track.children.length / 2) el.setAttribute("aria-hidden", "true");
+  });
+  wrap.addEventListener("touchstart", function(){ wrap.classList.add("paused"); }, {passive:true});
+  wrap.addEventListener("touchend", function(){ wrap.classList.remove("paused"); });
 })();
 
 /* ---------------------------------------------------------
@@ -2259,6 +2286,16 @@ else deepLink();
   document.querySelectorAll('[data-num="4"]').forEach(function(e){ e.dataset.num = marcas; });
 
   window.revelar();
+
+  /* Rede de segurança: se por qualquer motivo o scroll-reveal não
+     disparar (ex.: captura de tela automática, ferramenta de preview
+     que não rola a página de verdade), revela tudo de qualquer forma
+     depois de alguns segundos — assim nenhum conteúdo fica "preso"
+     invisível. Não afeta a experiência normal de rolagem. */
+  setTimeout(function(){
+    document.querySelectorAll(".rv:not(.in), .rv-up:not(.in), .rv-wipe:not(.in)")
+      .forEach(function(e){ e.classList.add("in"); });
+  }, 2500);
 })();
 </script>
 </body>
