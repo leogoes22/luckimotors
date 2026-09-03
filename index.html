@@ -566,6 +566,34 @@ select.fld option{background:#141414;color:var(--bone);}
 .q .a p{padding:0 2px 20px;color:var(--dim);font-size:.93rem;max-width:72ch;}
 
 /* ---------------------------------------------------------
+   18B. AVALIAÇÕES — depoimentos do Google
+   --------------------------------------------------------- */
+.g-badge{display:flex;align-items:center;gap:14px;padding:14px 22px;border:1px solid var(--edge);
+  background:var(--panel);transition:border-color .3s,background .3s;white-space:nowrap;}
+.g-badge:hover{border-color:var(--hair-2);background:var(--panel-2);}
+.g-badge svg{flex:none;}
+.gb-score{display:flex;flex-direction:column;line-height:1.15;}
+.gb-score b{font-family:var(--display);font-size:1.5rem;font-weight:700;color:var(--gold-hi);}
+.gb-stars{color:var(--gold);font-size:.76rem;letter-spacing:.04em;}
+.gb-txt{font-size:.78rem;color:var(--dim);border-left:1px solid var(--edge);padding-left:14px;line-height:1.4;}
+.gb-txt b{display:block;color:var(--bone);font-weight:600;}
+
+.revs{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,20px);}
+.rev{border:1px solid var(--edge);background:var(--panel);padding:clamp(22px,2.6vw,28px);
+  display:flex;flex-direction:column;gap:14px;transition:border-color .3s,background .3s,transform .3s;}
+.rev:hover{border-color:var(--hair-2);background:var(--panel-2);transform:translateY(-4px);}
+.rev-top{display:flex;align-items:flex-start;gap:12px;}
+.rev-av{width:42px;height:42px;flex:none;border-radius:50%;display:grid;place-content:center;
+  font-family:var(--display);font-weight:700;font-size:1rem;color:#0a0a0a;}
+.rev-id{flex:1;min-width:0;}
+.rev-id b{display:block;font-size:.94rem;}
+.rev-id span{display:block;font-size:.72rem;color:var(--faint);margin-top:1px;}
+.rev-stars{color:var(--gold);font-size:.82rem;letter-spacing:.05em;white-space:nowrap;margin-left:auto;}
+.rev p{font-size:.9rem;color:var(--dim);flex:1;}
+.rev-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:12px;
+  border-top:1px solid var(--edge);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);}
+
+/* ---------------------------------------------------------
    19. CHAMADA FINAL
    --------------------------------------------------------- */
 .cta{position:relative;overflow:hidden;border:1px solid var(--hair);background:#0c0c0c;
@@ -837,6 +865,7 @@ select.fld option{background:#141414;color:var(--bone);}
   .fgrid{grid-template-columns:repeat(2,1fr);}
   .f.c3{grid-column:span 2;}
   .local{grid-template-columns:1fr;}
+  .revs{grid-template-columns:1fr 1fr;}
   .map{min-height:330px;}
   .bens{grid-template-columns:1fr 1fr;}
   .vs{grid-template-columns:1fr;}
@@ -865,6 +894,8 @@ select.fld option{background:#141414;color:var(--bone);}
   .steps{grid-template-columns:1fr;}
   .bens{grid-template-columns:1fr;}
   .grid{grid-template-columns:1fr;}
+  .revs{grid-template-columns:1fr;}
+  .g-badge{width:100%;}
   .ftr-grid{grid-template-columns:1fr;}
   .fgrid{grid-template-columns:1fr;}
   .f.c2,.f.c3{grid-column:span 1;}
@@ -928,6 +959,8 @@ select.fld option{background:#141414;color:var(--bone);}
 .spec{border-radius:var(--r-sm);overflow:hidden;}
 .vs-col{border-radius:var(--r-lg);}
 .pillars{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--edge);}
+.rev{border-radius:var(--r-lg);}
+.g-badge{border-radius:var(--r-pill);}
 .steps{border-radius:var(--r-lg);overflow:hidden;}
 .bens{border-radius:var(--r-lg);overflow:hidden;}
 .gauges{border-radius:var(--r);}
@@ -1084,6 +1117,57 @@ select.fld option{background:#141414;color:var(--bone);}
           <div class="cap"><b>Yamaha XTZ 250 Lander</b><span>Um dos destaques do pátio</span></div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="sec" id="avaliacoes" style="padding-top:0;">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="rv">
+          <span class="tagline">Avaliações</span>
+          <h2>Quem já <em>saiu de moto</em></h2>
+          <p class="lede">Feedback real de cliente, direto do nosso perfil no Google.</p>
+        </div>
+        <a class="g-badge rv" href="https://maps.app.goo.gl/GzJDuCupgtpMeBf8A" target="_blank" rel="noopener" aria-label="Ver avaliações da Lucki Motors no Google">
+          <svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+          <div class="gb-score"><b>5,0</b><span class="gb-stars">★★★★★</span></div>
+          <span class="gb-txt"><b>21 avaliações</b>no Google</span>
+        </a>
+      </div>
+
+      <div class="revs rv-wipe">
+        <article class="rev">
+          <div class="rev-top">
+            <div class="rev-av" style="background:#5b6470">D</div>
+            <div class="rev-id"><b>Duarte</b><span>2 avaliações · 1 foto</span></div>
+            <span class="rev-stars">★★★★★</span>
+          </div>
+          <p>"Super recomendo, fui muito bem atendido, ainda facilitaram a aprovação para eu sair de moto 0km da loja, estou super satisfeito com a minha mais nova aquisição."</p>
+          <div class="rev-foot"><span>Google</span><span>5 meses atrás</span></div>
+        </article>
+
+        <article class="rev">
+          <div class="rev-top">
+            <div class="rev-av" style="background:#3f6f52">F</div>
+            <div class="rev-id"><b>Fernando Rodrigues</b><span>3 avaliações</span></div>
+            <span class="rev-stars">★★★★★</span>
+          </div>
+          <p>"Motos de excelente, melhor loja do RJ. Do atendimento à conclusão foram muito atenciosos em cada detalhe. Obrigado pela ajuda, sonho realizado 🙏"</p>
+          <div class="rev-foot"><span>Google</span><span>5 meses atrás</span></div>
+        </article>
+
+        <article class="rev">
+          <div class="rev-top">
+            <div class="rev-av" style="background:#a15c2e">A</div>
+            <div class="rev-id"><b>Adriely dos Anjos</b><span>4 avaliações</span></div>
+            <span class="rev-stars">★★★★★</span>
+          </div>
+          <p>"Eu tive excelentes experiências com o Lucas, já comprei 3 veículos com ele, me auxiliou também na venda de uma moto. Muito profissional, prestativo e paciente. Eu recomendo a loja!"</p>
+          <div class="rev-foot"><span>Google</span><span>Avaliação verificada</span></div>
+        </article>
+      </div>
+
+      <div class="more rv"><a href="https://maps.app.goo.gl/GzJDuCupgtpMeBf8A" target="_blank" rel="noopener" class="btn btn-line btn-lg">Ver todas as avaliações no Google</a></div>
     </div>
   </section>
 
