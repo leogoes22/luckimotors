@@ -1259,6 +1259,69 @@ var CARS = [
 </script>
 <script>
 /* =========================================================
+   LUCKI MOTORS — estoque ao vivo
+   A lista CARS acima e o ultimo estoque conhecido e funciona como RESERVA:
+   se o webhook nao responder em 3,5s, ou responder vazio, o site continua
+   no ar com ela. Nada de pagina em branco por causa de integracao.
+   ========================================================= */
+(function(){
+  "use strict";
+
+  var API = "https://webhook.lv-mktdeconversa.com/webhook/estoque-lucki";
+  var TETO = 3500;               /* espera maxima antes de usar a reserva */
+  var pronto = false, fila = [];
+
+  function listaValida(d){
+    if (!d) return null;
+    var a = Array.isArray(d) ? d
+          : (d.veiculos || d.estoque || (d.data && d.data.veiculos) || null);
+    if (!Array.isArray(a) || !a.length) return null;
+    /* confere o formato minimo que o site usa: id, marca, modelo */
+    var ok = a.filter(function(v){ return v && v.id && v.b && v.m; });
+    return ok.length ? ok : null;
+  }
+
+  function liberar(){
+    if (pronto) return;
+    pronto = true;
+    var f = fila; fila = [];
+    f.forEach(function(cb){ try { cb(); } catch (e) {} });
+  }
+
+  /* as paginas chamam isto no lugar de renderizar direto */
+  window.comEstoque = function(cb){
+    if (typeof cb !== "function") return;
+    if (pronto) { try { cb(); } catch (e) {} return; }
+    fila.push(cb);
+  };
+
+  var relogio = setTimeout(function(){
+    if (window.console) console.warn("[estoque] webhook demorou — usando a lista embutida");
+    liberar();
+  }, TETO);
+
+  function aplicar(d){
+    var nova = listaValida(d);
+    if (nova) {
+      CARS = nova;
+      window.CARS = nova;
+      window.ESTOQUE_AO_VIVO = true;
+    }
+    clearTimeout(relogio);
+    liberar();
+  }
+
+  try {
+    fetch(API, { cache: "no-store" })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(aplicar)
+      .catch(function(){ aplicar(null); });
+  } catch (e) { aplicar(null); }
+})();
+</script>
+
+<script>
+/* =========================================================
    LUCKI MOTORS — núcleo, animações e formulários
    ========================================================= */
 (function(){
