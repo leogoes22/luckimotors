@@ -1,6 +1,56 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
+<script>
+/* LeadVox: uma consulta antecipada, cache completo por 60s e prazo de rede. */
+(function(){
+  "use strict";
+  var endpoint = "https://webhook.lv-mktdeconversa.com/webhook/estoque-lucki", pending;
+  function lista(d){ return Array.isArray(d) ? d : d && d.veiculos; }
+  function valido(d){
+    var a=lista(d);
+    if(!Array.isArray(a) || (d && d.ok === false)) return false;
+    if(!Array.isArray(d) && typeof d.total === "number" && d.total !== a.length) return false;
+    var ids=new Set();
+    return a.every(function(v){
+      if(!v || typeof v !== "object") return false;
+      var id=v.id != null ? v.id : (v.CodigoVeiculo != null ? v.CodigoVeiculo : (v.Codigo != null ? v.Codigo : v.ID));
+      if(id == null || String(id).trim()==="" || ids.has(String(id))) return false;
+      ids.add(String(id)); return true;
+    });
+  }
+  window.LVStockFetch=function(){
+    if(!pending) pending=(async function(){
+      var key="lv:stock:v1:"+endpoint, saved;
+      try{
+        saved=JSON.parse(localStorage.getItem(key));
+        var age=saved && Date.now()-saved.at;
+        if(saved && age>=0 && age<60000 && valido(saved.data)) return saved.data;
+      }catch(e){}
+      var ctl=new AbortController(), timer=setTimeout(function(){ctl.abort();},20000);
+      try{
+        var r=await fetch(endpoint,{cache:"no-store",signal:ctl.signal});
+        if(!r.ok) throw new Error("HTTP "+r.status);
+        var d=await r.json();
+        if(!valido(d)) throw new Error("Estoque incompleto ou inválido");
+        try{localStorage.setItem(key,JSON.stringify({at:Date.now(),data:d}));}catch(e){}
+        return d;
+      }finally{clearTimeout(timer);}
+    })();
+    return pending.then(function(d){return new Response(JSON.stringify(d),{status:200,headers:{"Content-Type":"application/json"}});});
+  };
+  window.LVStockFetch().catch(function(){
+    function aviso(){
+      if(document.getElementById("lv-stock-status")) return;
+      var el=document.createElement("p"); el.id="lv-stock-status"; el.setAttribute("role","status");
+      el.style.cssText="padding:16px;text-align:center;background:#fff3cd;color:#453511";
+      el.textContent="Não foi possível atualizar o estoque agora. Confirme a disponibilidade e os valores com nossa equipe.";
+      (document.querySelector("main") || document.body).prepend(el);
+    }
+    if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",aviso,{once:true}); else aviso();
+  });
+})();
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Financiamento — Lucki Motors | Aprovação rápida</title>
@@ -1275,10 +1325,10 @@ var CARS = [
     if (!d) return null;
     var a = Array.isArray(d) ? d
           : (d.veiculos || d.estoque || (d.data && d.data.veiculos) || null);
-    if (!Array.isArray(a) || !a.length) return null;
+    if (!Array.isArray(a)) return null;
     /* confere o formato minimo que o site usa: id, marca, modelo */
     var ok = a.filter(function(v){ return v && v.id && v.b && v.m; });
-    return ok.length ? ok : null;
+    return ok.length === a.length ? ok : null;
   }
 
   function liberar(){
@@ -1295,14 +1345,11 @@ var CARS = [
     fila.push(cb);
   };
 
-  var relogio = setTimeout(function(){
-    if (window.console) console.warn("[estoque] webhook demorou — usando a lista embutida");
-    liberar();
-  }, TETO);
+  var relogio = null;
 
   function aplicar(d){
     var nova = listaValida(d);
-    if (nova) {
+    if (nova !== null) {
       CARS = nova;
       window.CARS = nova;
       window.ESTOQUE_AO_VIVO = true;
@@ -1312,7 +1359,7 @@ var CARS = [
   }
 
   try {
-    fetch(API, { cache: "no-store" })
+    window.LVStockFetch()
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(aplicar)
       .catch(function(){ aplicar(null); });
@@ -2136,7 +2183,7 @@ else deepLink();
 
 </script>
 <script>
-(function(){
+window.comEstoque(function(){
   var vid = new URLSearchParams(location.search).get("v");
   var moto = vid ? window.achaVeiculo(vid) : null;
 
@@ -2174,7 +2221,7 @@ else deepLink();
   });
 
   window.revelar();
-})();
+});
 </script>
 </body>
 </html>
